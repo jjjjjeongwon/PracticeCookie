@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+import React, { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+
+
+function App(){
+
+  const [cookies, setCookie, removeCookie] = useCookies(['rememberNumber']);
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    getCookieFunc();
+  }, []);
+
+  const setCookieFunc = () => {
+    let random = Math.floor(Math.random() * (10 - 0) + 0);
+    setCookie('rememberNumber', random, {maxAge:2000});
+    
+    let result = "setCookie : "+random;
+    setText(result);
+  }
+
+  const getCookieFunc = (param) => {
+    let result = "getCookie : "+cookies.rememberNumber;
+    console.log(cookies.rememberNumber);
+    setText(result);
+  }
+
+  const removeCookieFunc = () => {
+    removeCookie('rememberNumber');
+
+    setText("removeCookie");
+  }
+
+
+
+  return(
+    <div>
+      <button onClick={setCookieFunc}>set cookie</button>
+      <button onClick={getCookieFunc}>get cookie</button>
+      <button onClick={removeCookieFunc}>remove cookie</button>
+
+      <p>{text}</p>
     </div>
+
+
+    
   );
 }
 
-export default App;
+  export default App;
